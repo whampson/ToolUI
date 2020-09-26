@@ -7,7 +7,6 @@
     xmlns:c="clr-namespace:WHampson.ToolUI.Controls;assembly=WHampson.ToolUI"
     xmlns:v="clr-namespace:WHampson.ToolUI.Views;assembly=WHampson.ToolUI"
     xmlns:local="clr-namespace:ToolUI.Test"
-    d:DataContext="{d:DesignInstance Type=local:TestViewModel}"
     mc:Ignorable="d"
     Title="MainWindow" Height="450" Width="550">
 
@@ -15,27 +14,58 @@
         <local:MainWindowVM/>
     </Window.DataContext>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding CancelCommand}"/>
+    </Window.InputBindings>
 
-        <c:CoordinatePicker3D Grid.Row="0" Grid.Column="0" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector3}"/>
-        <c:CoordinatePicker2D Grid.Row="1" Grid.Column="0" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector2}"/>
+    <DockPanel>
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding TestVector3}" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TestVector2}" VerticalAlignment="Center"/>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Test">
+                <MenuItem Header="Message Box">
+                    <MenuItem Header="Info" Command="{Binding MessageBoxInfoCommand}"/>
+                    <MenuItem Header="Warning" Command="{Binding MessageBoxWarningCommand}"/>
+                    <MenuItem Header="Error" Command="{Binding MessageBoxErrorCommand}"/>
+                    <MenuItem Header="Exception" Command="{Binding MessageBoxExceptionCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="OK" Command="{Binding MessageBoxOKCommand}"/>
+                    <MenuItem Header="OK Cancel" Command="{Binding MessageBoxOKCancelCommand}"/>
+                    <MenuItem Header="Yes No" Command="{Binding MessageBoxYesNoCommand}"/>
+                    <MenuItem Header="Yes No Cancel" Command="{Binding MessageBoxYesNoCancelCommand}"/>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
-        <Button Grid.Row="2" Grid.Column="0" Margin="5" Height="25" Content="Greeting" Command="{Binding GreetingCommand}"/>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <c:CoordinatePicker3D Grid.Column="0" Grid.Row="0" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector3}"/>
+            <c:CoordinatePicker2D Grid.Column="0" Grid.Row="2" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector2}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5,0" Text="{Binding TestVector3}" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5,0" Text="{Binding TestVector2}" VerticalAlignment="Center"/>
+
+            <c:TabControlEx Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Margin="2.5,5,5,5">
+                <TabItem Header="The"/>
+                <TabItem Header="Quick"/>
+                <TabItem Header="Brown"/>
+                <TabItem Header="Fox"/>
+                <TabItem Header="Jumps Over"/>
+                <TabItem Header="The Lazy Dog"/>
+            </c:TabControlEx>
+
+        </Grid>
+    </DockPanel>
+
 </v:WindowBase>

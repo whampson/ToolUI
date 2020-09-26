@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>WHampson.ToolUI</RootNamespace>
-    <AssemblyVersion>1.0.0.15</AssemblyVersion>
-    <FileVersion>1.0.0.15</FileVersion>
+    <AssemblyVersion>1.0.0.111</AssemblyVersion>
+    <FileVersion>1.0.0.111</FileVersion>
     <AssemblyName>WHampson.ToolUI</AssemblyName>
   </PropertyGroup>
 
