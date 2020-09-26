@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using WpfEssentials;
 using WpfEssentials.Win32;
 
 namespace WHampson.ToolUI.ViewModels
 {
-    public class WindowVMBase : ObservableObject
+    public class WindowBaseVM : ObservableObject
     {
         private string m_title;
 
         public event EventHandler<MessageBoxEventArgs> MessageBoxRequest;
         public event EventHandler<FileDialogEventArgs> FileDialogRequest;
         public event EventHandler<FileDialogEventArgs> FolderDialogRequest;
+        public event EventHandler HideRequest;
+        public event EventHandler CloseRequest;
 
         public string Title
         {
@@ -23,6 +26,9 @@ namespace WHampson.ToolUI.ViewModels
         { }
 
         public virtual void Shutdown()
+        { }
+
+        public virtual void ContentRendered()
         { }
 
         #region Dialog Box Functions
@@ -126,6 +132,11 @@ namespace WHampson.ToolUI.ViewModels
             MessageBoxRequest?.Invoke(this, e);
         }
 
+        public void ShowMessageBoxEx(MessageBoxEventArgs e)
+        {
+            MessageBoxRequest?.Invoke(this, e);
+        }
+
         public void ShowFileDialog(FileDialogType type, Action<bool?, FileDialogEventArgs> callback = null)
         {
             ShowFileDialog(new FileDialogEventArgs(type, callback));
@@ -145,6 +156,18 @@ namespace WHampson.ToolUI.ViewModels
         {
             FolderDialogRequest?.Invoke(this, e);
         }
+        #endregion
+
+        #region Window Commands
+        public ICommand HideCommand => new RelayCommand
+        (
+            () => HideRequest?.Invoke(this, EventArgs.Empty)
+        );
+
+        public ICommand CloseCommand => new RelayCommand
+        (
+            () => CloseRequest?.Invoke(this, EventArgs.Empty)
+        );
         #endregion
     }
 }

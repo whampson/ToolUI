@@ -1,0 +1,103 @@
+﻿<v:DialogBase
+    x:Class="WHampson.ToolUI.Views.MessageBoxEx"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:v="clr-namespace:WHampson.ToolUI.Views"
+    xmlns:vm="clr-namespace:WHampson.ToolUI.ViewModels"
+    mc:Ignorable="d"
+    Title="{Binding Title}"
+    Width="Auto" Height="Auto"
+    MinWidth="300" MinHeight="175"
+    MaxWidth="400"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="NoResize"
+    SizeToContent="WidthAndHeight"
+    UseLayoutRounding="True"
+    ShowInTaskbar="False">
+
+    <Window.DataContext>
+        <vm:MessageBoxExVM/>
+    </Window.DataContext>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Space" Command="{Binding SpaceBarCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Grid.Column="0"
+                Margin="10" Width="35"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Source="{Binding IconSource}"
+                Visibility="{Binding IsIconVisible, Converter={StaticResource BoolToVisibility}}"/>
+
+            <TextBlock
+                Grid.Column="1"
+                Margin="10"
+                VerticalAlignment="Center"
+                Text="{Binding Text}"
+                TextWrapping="Wrap"/>
+        </Grid>
+
+        <Border Background="#EEEEEE" Grid.Row="1">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Column="1"
+                    x:Name="m_button1"
+                    Content="{Binding Button1Info.Text}"
+                    Visibility="{Binding Button1Info.IsVisible, Converter={StaticResource BoolToVisibility}}"
+                    IsDefault="{Binding Button1Info.IsDefault}"
+                    IsCancel="{Binding Button1Info.IsCancel}"
+                    Command="{Binding Button1Command}"/>
+                <Button
+                    Grid.Column="2"
+                    x:Name="m_button2"
+                    Content="{Binding Button2Info.Text}"
+                    Visibility="{Binding Button2Info.IsVisible, Converter={StaticResource BoolToVisibility}}"
+                    IsDefault="{Binding Button2Info.IsDefault}"
+                    IsCancel="{Binding Button2Info.IsCancel}"
+                    Command="{Binding Button2Command}"/>
+                <Button
+                    Grid.Column="3"
+                    x:Name="m_button3"
+                    Content="{Binding Button3Info.Text}"
+                    Visibility="{Binding Button3Info.IsVisible, Converter={StaticResource BoolToVisibility}}"
+                    IsDefault="{Binding Button3Info.IsDefault}"
+                    IsCancel="{Binding Button3Info.IsCancel}"
+                    Command="{Binding Button3Command}"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</v:DialogBase>
