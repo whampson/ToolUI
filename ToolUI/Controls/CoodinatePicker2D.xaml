@@ -1,0 +1,90 @@
+﻿<c:CoordinatePickerBase
+    x:Class="WHampson.ToolUI.Controls.CoordinatePicker2D"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:c="clr-namespace:WHampson.ToolUI.Controls"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
+    mc:Ignorable="d">
+
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type c:CoordinatePicker2D}}}">
+
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+            <Style x:Key="LabelStyle" TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="Gray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="UpDownStyle" TargetType="xctk:SingleUpDown">
+                <Setter Property="DefaultValue" Value="0"/>
+                <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <!--<RowDefinition Height="*"/>-->
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Column="0" Grid.Row="0"
+            Width="{Binding LabelWidth}" Height="{Binding LabelHeight}"
+            Margin="{Binding LabelMargin}"
+            Style="{StaticResource LabelStyle}"
+            Text="{Binding XLabel}" 
+            Visibility="{Binding IsLabelVisible, Converter={StaticResource BoolToVisibility}}"/>
+
+        <TextBlock
+            Grid.Column="0" Grid.Row="1"
+            Width="{Binding LabelWidth}" Height="{Binding LabelHeight}"
+            Margin="{Binding LabelMargin}"
+            Style="{StaticResource LabelStyle}"
+            Text="{Binding YLabel}" 
+            Visibility="{Binding IsLabelVisible, Converter={StaticResource BoolToVisibility}}"/>
+
+        <!--<TextBlock
+            Grid.Column="0" Grid.Row="2"
+            Width="{Binding LabelWidth}" Height="{Binding LabelHeight}"
+            Margin="{Binding LabelMargin}"
+            Style="{StaticResource LabelStyle}"
+            Text="{Binding ZLabel}" 
+            Visibility="{Binding IsLabelVisible, Converter={StaticResource BoolToVisibility}}"/>-->
+
+        <xctk:SingleUpDown
+            Grid.Column="1" Grid.Row="0"
+            Width="{Binding UpDownWidth}" Height="{Binding UpDownHeight}"
+            Margin="{Binding UpDownMargin}"
+            Style="{StaticResource UpDownStyle}"
+            Value="{Binding X}" FormatString="{Binding FormatString}"
+            ValueChanged="XComponent_ValueChanged"/>
+
+        <xctk:SingleUpDown
+            Grid.Column="1" Grid.Row="1"
+            Width="{Binding UpDownWidth}" Height="{Binding UpDownHeight}"
+            Margin="{Binding UpDownMargin}"
+            Style="{StaticResource UpDownStyle}"
+            Value="{Binding Y}" FormatString="{Binding FormatString}"
+            ValueChanged="YComponent_ValueChanged"/>
+
+        <!--<xctk:SingleUpDown
+            Grid.Column="1" Grid.Row="2"
+            Width="{Binding UpDownWidth}" Height="{Binding UpDownHeight}"
+            Margin="{Binding UpDownMargin}"
+            Style="{StaticResource UpDownStyle}"
+            Value="{Binding Z}" FormatString="{Binding FormatString}"
+            ValueChanged="ZComponent_ValueChanged"/>-->
+
+    </Grid>
+
+</c:CoordinatePickerBase>
