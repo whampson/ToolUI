@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WpfEssentials;
 using WpfEssentials.Win32;
 
@@ -8,28 +10,159 @@ namespace WHampson.ToolUI.ViewModels
 {
     public class WindowBaseVM : ObservableObject
     {
-        private string m_title;
-
+        #region Events
         public event EventHandler<MessageBoxEventArgs> MessageBoxRequest;
         public event EventHandler<FileDialogEventArgs> FileDialogRequest;
         public event EventHandler<FileDialogEventArgs> FolderDialogRequest;
         public event EventHandler HideRequest;
         public event EventHandler CloseRequest;
+        #endregion
 
+        #region Fields
+        private readonly DispatcherTimer m_statusTimer;
+        private readonly Stopwatch m_statusStopwatch;
+        private long m_timerDuration;
+        private string m_statusText;
+        private string m_defaultStatusText;
+        private string m_title;
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Gets or sets the window title.
+        /// </summary>
         public string Title
         {
             get { return m_title; }
             set { m_title = value; OnPropertyChanged(); }
         }
 
+        /// <summary>
+        /// Gets the status text.
+        /// </summary>
+        public string StatusText
+        {
+            get { return m_statusText; }
+            private set { m_statusText = value; OnPropertyChanged(); }
+        }
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Creates a new <see cref="WindowBaseVM"/> instance.
+        /// </summary>
+        public WindowBaseVM()
+        {
+            m_statusTimer = new DispatcherTimer();
+            m_statusStopwatch = new Stopwatch();
+        }
+        #endregion
+
+        #region Virtual Functions
+        /// <summary>
+        /// Initializes the view model. This method is invoked when the window's
+        /// <see cref="FrameworkElement.Initialized"/> event is fired.
+        /// </summary>
         public virtual void Init()
-        { }
+        {
+            m_statusTimer.Tick += StatusTimer_Tick;
+        }
 
+        /// <summary>
+        /// Un-initializes the view model. This method is invoked when the window's
+        /// <see cref="Window.Closing"/> event is fired.
+        /// </summary>
         public virtual void Shutdown()
-        { }
+        {
+            m_statusTimer.Tick -= StatusTimer_Tick;
+        }
 
+        /// <summary>
+        /// This method is invoked when the window's <see cref="Window.ContentRendered"/>
+        /// event is fired.
+        /// </summary>
         public virtual void ContentRendered()
         { }
+
+        /// <summary>
+        /// This method is invoked when the window's <see cref="Window.Activated"/>
+        /// event is fired.
+        /// </summary>
+        public virtual void Activated()
+        { }
+
+        /// <summary>
+        /// This method is invoked when the window's <see cref="Window.Deactivated"/>
+        /// event is fired.
+        /// </summary>
+        public virtual void Dectivated()
+        { }
+        #endregion
+
+        #region Status Text Functions
+        /// <summary>
+        /// Sets the status text.
+        /// </summary>
+        /// <param name="status">
+        /// The new status text.
+        /// </param>
+        public void SetStatusText(string status)
+        {
+            if (m_statusTimer.IsEnabled)
+            {
+                m_statusTimer.Stop();
+            }
+
+            StatusText = status;
+            m_defaultStatusText = status;
+        }
+
+        /// <summary>
+        /// Sets the status text for a period of time.
+        /// </summary>
+        /// <param name="status">
+        /// The new temporary status text.
+        /// </param>
+        /// <param name="duration">
+        /// The time in seconds to display the temporary status text.
+        /// </param>
+        /// <param name="expiredStatus">
+        /// The text to show after the temporary status text expires.
+        /// If <c>null</c>, the status text will be restored to the
+        /// previous value.
+        /// </param>
+        public void SetTimedStatusText(string status,
+            double duration = 2.5,
+            string expiredStatus = null)
+        {
+            if (duration < 0) throw new ArgumentOutOfRangeException(nameof(duration));
+            if (expiredStatus == null) expiredStatus = m_defaultStatusText;
+
+            if (m_statusTimer.IsEnabled)
+            {
+                m_statusTimer.Stop();
+                m_statusText = expiredStatus;
+            }
+
+            m_defaultStatusText = expiredStatus;
+            StatusText = status;
+            m_timerDuration = (int) (duration * 1000);
+            m_statusTimer.Interval = TimeSpan.FromMilliseconds(1);
+
+            m_statusStopwatch.Reset();
+            m_statusTimer.Start();
+            m_statusStopwatch.Start();
+        }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            if (m_statusStopwatch.ElapsedMilliseconds >= m_timerDuration)
+            {
+                m_statusTimer.Stop();
+                StatusText = m_defaultStatusText;
+            }
+        }
+        #endregion
 
         #region Dialog Box Functions
         public void ShowInfo(string text, string title = "Information")
@@ -139,7 +272,10 @@ namespace WHampson.ToolUI.ViewModels
 
         public void ShowFileDialog(FileDialogType type, Action<bool?, FileDialogEventArgs> callback = null)
         {
-            ShowFileDialog(new FileDialogEventArgs(type, callback));
+            ShowFileDialog(new FileDialogEventArgs(type, callback)
+            {
+                Filter = "All Files|*.*"
+            });
         }
 
         public void ShowFileDialog(FileDialogEventArgs e)
@@ -147,8 +283,9 @@ namespace WHampson.ToolUI.ViewModels
             FileDialogRequest?.Invoke(this, e);
         }
 
-        public void ShowFolderDialog(FileDialogType type, Action<bool?, FileDialogEventArgs> callback = null)
+        public void ShowFolderDialog(Action<bool?, FileDialogEventArgs> callback = null)
         {
+            var type = FileDialogType.OpenFileDialog;   // irrelevant
             ShowFolderDialog(new FileDialogEventArgs(type, callback));
         }
 

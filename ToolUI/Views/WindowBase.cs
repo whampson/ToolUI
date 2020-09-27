@@ -9,12 +9,18 @@ namespace WHampson.ToolUI.Views
 {
     public class WindowBase : Window
     {
+        /// <summary>
+        /// Gets or sets the view model.
+        /// </summary>
         public WindowBaseVM ViewModel
         {
             get { return (WindowBaseVM) DataContext; }
             set { DataContext = value; }
         }
 
+        /// <summary>
+        /// Hide the window instead of closing it when <see cref="Window.Close"/> is called.
+        /// </summary>
         public bool HideOnClose { get; set; }
 
         protected override void OnInitialized(EventArgs e)
@@ -50,6 +56,18 @@ namespace WHampson.ToolUI.Views
         {
             base.OnContentRendered(e);
             ViewModel.ContentRendered();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            ViewModel.Activated();
+        }
+
+        protected override void OnDeactivated(EventArgs e)
+        {
+            base.OnDeactivated(e);
+            ViewModel.Dectivated();
         }
 
         private void ViewModel_MessageBoxRequest(object sender, MessageBoxEventArgs e)

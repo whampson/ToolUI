@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using System.Windows.Input;
+using Bogus;
 using WHampson.ToolUI.ViewModels;
 using WpfEssentials.Win32;
 
@@ -10,6 +12,9 @@ namespace ToolUI.Test
     {
         private Vector2 m_testVector2;
         private Vector3 m_testVector3;
+        private string m_status;
+        private string m_timedStatus;
+        private double m_statusDuration;
 
         public Vector2 TestVector2
         {
@@ -23,9 +28,35 @@ namespace ToolUI.Test
             set { m_testVector3 = value; OnPropertyChanged(); }
         }
 
+        public string Status
+        {
+            get { return m_status; }
+            set { m_status = value; OnPropertyChanged(); }
+        }
+
+        public string TimedStatus
+        {
+            get { return m_timedStatus; }
+            set { m_timedStatus = value; OnPropertyChanged(); }
+        }
+
+        public double StatusDuration
+        {
+            get { return m_statusDuration; }
+            set { m_statusDuration = value; OnPropertyChanged(); }
+        }
+
+        public MainWindowVM()
+        {
+            Status = "Ready.";
+            TimedStatus = "She sells sea shells by the sea shore.";
+        }
+
         public override void Init()
         {
             base.Init();
+            StatusDuration = 5;
+            SetStatusText(Status);
         }
 
         public override void Shutdown()
@@ -90,6 +121,66 @@ namespace ToolUI.Test
                 yesAction: () => ShowInfo("Yes selected."),
                 noAction: () => ShowInfo("No selected."),
                 cancelAction: () => ShowInfo("Cancel selected."))
+        );
+
+        public ICommand MessageBoxBigTextCommand => new RelayCommand
+        (
+            () => ShowInfo(new Faker().Lorem.Paragraphs(5), "Big Text")
+        );
+
+        public ICommand SetStatusCommand => new RelayCommand
+        (
+            () => SetStatusText(Status)
+        );
+
+        public ICommand SetTimedStatusCommand => new RelayCommand
+        (
+            () => SetTimedStatusText(TimedStatus, StatusDuration)
+        );
+
+        public ICommand FileDialogOpenCommand => new RelayCommand
+        (
+            () =>
+            {
+                Action<bool?, FileDialogEventArgs> callback = (r, e) =>
+                {
+                    if (r == true)
+                    {
+                        ShowInfo($"Selected file: {Path.GetFileName(e.FileName)}");
+                    }
+                };
+                ShowFileDialog(FileDialogType.OpenFileDialog, callback);
+            }
+        );
+
+        public ICommand FileDialogSaveCommand => new RelayCommand
+        (
+            () =>
+            {
+                Action<bool?, FileDialogEventArgs> callback = (r, e) =>
+                {
+                    if (r == true)
+                    {
+                        ShowInfo($"Selected file: {Path.GetFileName(e.FileName)}");
+                    }
+                };
+                ShowFileDialog(FileDialogType.SaveFileDialog, callback);
+            }
+        );
+
+        public ICommand FolderDialogCommand => new RelayCommand
+        (
+            () =>
+            {
+                Action<bool?, FileDialogEventArgs> callback = (r, e) =>
+                {
+                    if (r == true)
+                    {
+                        ShowInfo($"Selected path: {e.FileName}");
+                    }
+                };
+                ShowFolderDialog(callback);
+            }
         );
     }
 }

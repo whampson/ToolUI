@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="clr-namespace:WHampson.ToolUI.Controls;assembly=WHampson.ToolUI"
     xmlns:v="clr-namespace:WHampson.ToolUI.Views;assembly=WHampson.ToolUI"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
     xmlns:local="clr-namespace:ToolUI.Test"
     mc:Ignorable="d"
     Title="MainWindow" Height="450" Width="550">
@@ -20,52 +21,117 @@
 
     <DockPanel>
 
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Test">
-                <MenuItem Header="Message Box">
-                    <MenuItem Header="Info" Command="{Binding MessageBoxInfoCommand}"/>
-                    <MenuItem Header="Warning" Command="{Binding MessageBoxWarningCommand}"/>
-                    <MenuItem Header="Error" Command="{Binding MessageBoxErrorCommand}"/>
-                    <MenuItem Header="Exception" Command="{Binding MessageBoxExceptionCommand}"/>
+        <Border  DockPanel.Dock="Top" BorderBrush="LightGray" BorderThickness="0,1">
+            <Menu>
+                <MenuItem Header="Test">
+                    <MenuItem Header="Message Box">
+                        <MenuItem Header="Info" Command="{Binding MessageBoxInfoCommand}"/>
+                        <MenuItem Header="Warning" Command="{Binding MessageBoxWarningCommand}"/>
+                        <MenuItem Header="Error" Command="{Binding MessageBoxErrorCommand}"/>
+                        <MenuItem Header="Exception" Command="{Binding MessageBoxExceptionCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="OK" Command="{Binding MessageBoxOKCommand}"/>
+                        <MenuItem Header="OK Cancel" Command="{Binding MessageBoxOKCancelCommand}"/>
+                        <MenuItem Header="Yes No" Command="{Binding MessageBoxYesNoCommand}"/>
+                        <MenuItem Header="Yes No Cancel" Command="{Binding MessageBoxYesNoCancelCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Big Text" Command="{Binding MessageBoxBigTextCommand}"/>
+                    </MenuItem>
                     <Separator/>
-                    <MenuItem Header="OK" Command="{Binding MessageBoxOKCommand}"/>
-                    <MenuItem Header="OK Cancel" Command="{Binding MessageBoxOKCancelCommand}"/>
-                    <MenuItem Header="Yes No" Command="{Binding MessageBoxYesNoCommand}"/>
-                    <MenuItem Header="Yes No Cancel" Command="{Binding MessageBoxYesNoCancelCommand}"/>
+                    <MenuItem Header="File Dialog">
+                        <MenuItem Header="File Open" Command="{Binding FileDialogOpenCommand}"/>
+                        <MenuItem Header="File Save" Command="{Binding FileDialogSaveCommand}"/>
+                        <Separator/>
+                        <MenuItem Header="Folder Select" Command="{Binding FolderDialogCommand}"/>
+                    </MenuItem>
                 </MenuItem>
-            </MenuItem>
-        </Menu>
+            </Menu>
+        </Border>
 
         <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
-            <c:CoordinatePicker3D Grid.Column="0" Grid.Row="0" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector3}"/>
-            <c:CoordinatePicker2D Grid.Column="0" Grid.Row="2" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector2}"/>
+            <c:TabControlEx Grid.Row="0" Margin="5">
+                <TabItem Header="Vectors">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5,0" Text="{Binding TestVector3}" VerticalAlignment="Center"/>
-            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5,0" Text="{Binding TestVector2}" VerticalAlignment="Center"/>
+                        <c:CoordinatePicker3D Grid.Column="0" Grid.Row="0" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector3}"/>
+                        <c:CoordinatePicker2D Grid.Column="0" Grid.Row="2" Margin="5" LabelMargin="5" UpDownMargin="0,2.5" UpDownHeight="25" UpDownWidth="100" FormatString="N" Value="{Binding TestVector2}"/>
 
-            <c:TabControlEx Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Margin="2.5,5,5,5">
-                <TabItem Header="The"/>
-                <TabItem Header="Quick"/>
-                <TabItem Header="Brown"/>
-                <TabItem Header="Fox"/>
-                <TabItem Header="Jumps Over"/>
-                <TabItem Header="The Lazy Dog"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5,0" Text="{Binding TestVector3}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Margin="5,0" Text="{Binding TestVector2}" VerticalAlignment="Center"/>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Status Text">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.Resources>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="5"/>
+                                <EventSetter Event="GotFocus" Handler="TextBox_GotFocus"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="TextBox_MouseDoubleClick"/>
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TextBox_PreviewMouseLeftButtonDown"/>
+                            </Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Width" Value="125"/>
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="5"/>
+                            </Style>
+                            <Style TargetType="xctk:DoubleUpDown">
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="5"/>
+                                <Setter Property="DefaultValue" Value="0"/>
+                                <Setter Property="DisplayDefaultValueOnEmptyText" Value="True"/>
+                            </Style>
+                        </Grid.Resources>
+
+                        <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding Status}"/>
+                        <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding TimedStatus}"/>
+
+                        <Button Grid.Column="1" Grid.Row="0" Content="Set Status Text" Command="{Binding SetStatusCommand}"/>
+                        <Button Grid.Column="1" Grid.Row="1" Content="Set Timed Status Text" Command="{Binding SetTimedStatusCommand}"/>
+
+                        <xctk:DoubleUpDown Grid.Column="2" Grid.Row="1" Minimum="0" Value="{Binding StatusDuration}"/>
+                    </Grid>
+                </TabItem>
             </c:TabControlEx>
 
+            <Border BorderBrush="LightGray" Grid.Row="1" BorderThickness="0,1">
+                <StatusBar Grid.Row="1">
+                    <StatusBarItem>
+                        <TextBlock Text="{Binding StatusText}"/>
+                    </StatusBarItem>
+                </StatusBar>
+            </Border>
         </Grid>
     </DockPanel>
+
 
 </v:WindowBase>

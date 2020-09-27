@@ -4,12 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.0.111</AssemblyVersion>
-    <FileVersion>1.0.0.111</FileVersion>
+    <AssemblyVersion>1.0.0.144</AssemblyVersion>
+    <FileVersion>1.0.0.144</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.86" />
+    <PackageReference Include="Bogus" Version="29.0.1" />
   </ItemGroup>
 
   <ItemGroup>
