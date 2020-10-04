@@ -6,6 +6,9 @@ using System.Windows.Data;
 
 namespace WHampson.ToolUI.Converters
 {
+    /// <summary>
+    /// Converts a <see cref="Vector2"/> or <see cref="Vector3"/> to <see cref="string"/> and back.
+    /// </summary>
     public class VectorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -27,7 +30,7 @@ namespace WHampson.ToolUI.Converters
         {
             if (value is string s)
             {
-                string[] comp = s.Split(",");
+                string[] comp = s.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (comp.Length > 1 && comp.Length < 4)
                 {
                     bool xValid = false, yValid = false, zValid = false;

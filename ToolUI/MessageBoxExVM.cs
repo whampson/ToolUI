@@ -9,9 +9,12 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using WpfEssentials.Win32;
 
-namespace WHampson.ToolUI.ViewModels
+namespace WHampson.ToolUI
 {
-    public class MessageBoxExVM : DialogBaseVM
+    /// <summary>
+    /// Extended Message Box view model.
+    /// </summary>
+    public class MessageBoxExVM : DialogVM
     {
         private const string OKText = "OK";
         private const string CancelText = "Cancel";
@@ -116,9 +119,9 @@ namespace WHampson.ToolUI.ViewModels
             }
         }
 
-        public override void ContentRendered()
+        public override void Load()
         {
-            base.ContentRendered();
+            base.Load();
             switch (Icon)
             {
                 // TODO: configurable thru request event?

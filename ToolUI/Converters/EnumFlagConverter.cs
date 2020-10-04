@@ -5,6 +5,11 @@ using System.Windows.Data;
 
 namespace WHampson.ToolUI.Converters
 {
+    /// <summary>
+    /// Convert tests whether a flag is set in a flags enum.
+    /// ConvertBack will set or clear a flag in a flags enum.
+    /// </summary>
+    [ValueConversion(typeof(Enum), typeof(bool), ParameterType = typeof(Enum))]
     public class EnumFlagConverter : IValueConverter
     {
         private Enum m_target;

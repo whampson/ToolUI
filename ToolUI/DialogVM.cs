@@ -3,9 +3,12 @@ using System.Windows.Input;
 using WHampson.ToolUI.Events;
 using WpfEssentials.Win32;
 
-namespace WHampson.ToolUI.ViewModels
+namespace WHampson.ToolUI
 {
-    public class DialogBaseVM : WindowBaseVM
+    /// <summary>
+    /// Base class for dialog box view models.
+    /// </summary>
+    public class DialogVM : WindowVM
     {
         public new event EventHandler<DialogCloseEventArgs> CloseRequest;
 
@@ -14,7 +17,6 @@ namespace WHampson.ToolUI.ViewModels
             CloseRequest?.Invoke(this, new DialogCloseEventArgs(result));
         }
 
-        #region Window Commands
         public new ICommand CloseCommand => new RelayCommand<bool?>
         (
             (r) => CloseRequest?.Invoke(this, new DialogCloseEventArgs(r))
@@ -29,6 +31,5 @@ namespace WHampson.ToolUI.ViewModels
         (
             () => Close(true)
         );
-        #endregion
     }
 }

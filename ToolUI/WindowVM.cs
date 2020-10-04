@@ -3,12 +3,14 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using WpfEssentials;
 using WpfEssentials.Win32;
 
-namespace WHampson.ToolUI.ViewModels
+namespace WHampson.ToolUI
 {
-    public class WindowBaseVM : ObservableObject
+    /// <summary>
+    /// Base class for window view models.
+    /// </summary>
+    public class WindowVM : BaseVM
     {
         #region Events
         public event EventHandler<MessageBoxEventArgs> MessageBoxRequest;
@@ -18,7 +20,7 @@ namespace WHampson.ToolUI.ViewModels
         public event EventHandler CloseRequest;
         #endregion
 
-        #region Fields
+        #region Private Fields
         private readonly DispatcherTimer m_statusTimer;
         private readonly Stopwatch m_statusStopwatch;
         private long m_timerDuration;
@@ -27,7 +29,7 @@ namespace WHampson.ToolUI.ViewModels
         private string m_title;
         #endregion
 
-        #region Properties
+        #region Public Properties
         /// <summary>
         /// Gets or sets the window title.
         /// </summary>
@@ -49,9 +51,9 @@ namespace WHampson.ToolUI.ViewModels
 
         #region Constructors
         /// <summary>
-        /// Creates a new <see cref="WindowBaseVM"/> instance.
+        /// Creates a new <see cref="WindowVM"/> instance.
         /// </summary>
-        public WindowBaseVM()
+        public WindowVM()
         {
             m_statusTimer = new DispatcherTimer();
             m_statusStopwatch = new Stopwatch();
@@ -59,31 +61,6 @@ namespace WHampson.ToolUI.ViewModels
         #endregion
 
         #region Virtual Functions
-        /// <summary>
-        /// Initializes the view model. This method is invoked when the window's
-        /// <see cref="FrameworkElement.Initialized"/> event is fired.
-        /// </summary>
-        public virtual void Init()
-        {
-            m_statusTimer.Tick += StatusTimer_Tick;
-        }
-
-        /// <summary>
-        /// Un-initializes the view model. This method is invoked when the window's
-        /// <see cref="Window.Closing"/> event is fired.
-        /// </summary>
-        public virtual void Shutdown()
-        {
-            m_statusTimer.Tick -= StatusTimer_Tick;
-        }
-
-        /// <summary>
-        /// This method is invoked when the window's <see cref="Window.ContentRendered"/>
-        /// event is fired.
-        /// </summary>
-        public virtual void ContentRendered()
-        { }
-
         /// <summary>
         /// This method is invoked when the window's <see cref="Window.Activated"/>
         /// event is fired.
@@ -95,8 +72,29 @@ namespace WHampson.ToolUI.ViewModels
         /// This method is invoked when the window's <see cref="Window.Deactivated"/>
         /// event is fired.
         /// </summary>
-        public virtual void Dectivated()
+        public virtual void Deactivated()
         { }
+
+        /// <summary>
+        /// This method is invoked when the window's <see cref="Window.ContentRendered"/>
+        /// event is fired.
+        /// </summary>
+        public virtual void ContentRendered()
+        { }
+        #endregion
+
+        #region Overridden Functions
+        public override void Init()
+        {
+            base.Init();
+            m_statusTimer.Tick += StatusTimer_Tick;
+        }
+
+        public override void Shutdown()
+        {
+            base.Shutdown();
+            m_statusTimer.Tick -= StatusTimer_Tick;
+        }
         #endregion
 
         #region Status Text Functions
@@ -261,11 +259,6 @@ namespace WHampson.ToolUI.ViewModels
         }
 
         public void ShowMessageBox(MessageBoxEventArgs e)
-        {
-            MessageBoxRequest?.Invoke(this, e);
-        }
-
-        public void ShowMessageBoxEx(MessageBoxEventArgs e)
         {
             MessageBoxRequest?.Invoke(this, e);
         }
