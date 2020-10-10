@@ -1,67 +1,114 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
 using Bogus;
-using WHampson.ToolUI.ViewModels;
+using WHampson.ToolUI;
 using WpfEssentials.Win32;
 
 namespace ToolUI.Test
 {
-    public class MainWindowVM : WindowBaseVM
+    public class MainVM : WindowVM
     {
-        private Vector2 m_testVector2;
-        private Vector3 m_testVector3;
-        private string m_status;
-        private string m_timedStatus;
-        private double m_statusDuration;
+        private ObservableCollection<TabPageVM> m_tabs;
+        private int m_selectedTabIndex;
+        private int m_selectedTabSet;
+        private bool m_initialized;
 
-        public Vector2 TestVector2
+        private VectorsVM m_vectorsTab;
+        private StatusTextVM m_statusTextTab;
+        private ExtrasVM m_extrasTab;
+
+        public ObservableCollection<TabPageVM> Tabs
         {
-            get { return m_testVector2; }
-            set { m_testVector2 = value; OnPropertyChanged(); }
+            get { return m_tabs; }
+            set { m_tabs = value; OnPropertyChanged(); }
         }
 
-        public Vector3 TestVector3
+        public int SelectedTabIndex
         {
-            get { return m_testVector3; }
-            set { m_testVector3 = value; OnPropertyChanged(); }
+            get { return m_selectedTabIndex; }
+            set { m_selectedTabIndex = value; OnPropertyChanged(); }
         }
 
-        public string Status
+        public int SelectedTabSet
         {
-            get { return m_status; }
-            set { m_status = value; OnPropertyChanged(); }
+            get { return m_selectedTabSet; }
+            set { m_selectedTabSet = value; OnPropertyChanged(); }
         }
 
-        public string TimedStatus
+        public bool Initialized
         {
-            get { return m_timedStatus; }
-            set { m_timedStatus = value; OnPropertyChanged(); }
+            get { return m_initialized; }
+            private set { m_initialized = value; OnPropertyChanged(); }
         }
 
-        public double StatusDuration
+        public MainVM()
         {
-            get { return m_statusDuration; }
-            set { m_statusDuration = value; OnPropertyChanged(); }
-        }
-
-        public MainWindowVM()
-        {
-            Status = "Ready.";
-            TimedStatus = "She sells sea shells by the sea shore.";
+            m_vectorsTab = new VectorsVM() { MainWindow = this, Title = "Vectors" };
+            m_statusTextTab = new StatusTextVM() { MainWindow = this, Title = "Status Text" };
+            m_extrasTab = new ExtrasVM() { MainWindow = this, Title = "Extras" };
+            
+            Tabs = new ObservableCollection<TabPageVM> { m_vectorsTab, m_statusTextTab, m_extrasTab };
         }
 
         public override void Init()
         {
             base.Init();
-            StatusDuration = 5;
-            SetStatusText(Status);
+
+            InitAllTabs();
+            Initialized = true;
         }
 
         public override void Shutdown()
         {
             base.Shutdown();
+
+            ShutdownAllTabs();
+        }
+
+        public override void Load()
+        {
+            base.Load();
+
+            SwitchTabSets();
+            UpdateActiveTab();
+        }
+
+        public void InitAllTabs()
+        {
+            foreach (var t in Tabs)
+            {
+                t.Init();
+            }
+        }
+
+        public void ShutdownAllTabs()
+        {
+            foreach (var t in Tabs)
+            {
+                t.Shutdown();
+            }
+        }
+
+        public void UpdateActiveTab()
+        {
+            var activeTab = Tabs.Where(x => x.IsVisible).FirstOrDefault();
+            if (activeTab != null)
+            {
+                activeTab.Update();
+            }
+        }
+
+        public void SwitchTabSets()
+        {
+            m_vectorsTab.IsVisible = (SelectedTabSet == 0);
+            m_statusTextTab.IsVisible = (SelectedTabSet == 0);
+            m_extrasTab.IsVisible = (SelectedTabSet == 1);
+
+            SelectedTabIndex = Tabs.IndexOf(Tabs.Where(x => x.IsVisible).FirstOrDefault());
         }
 
         public ICommand MessageBoxInfoCommand => new RelayCommand
@@ -126,16 +173,6 @@ namespace ToolUI.Test
         public ICommand MessageBoxBigTextCommand => new RelayCommand
         (
             () => ShowInfo(new Faker().Lorem.Paragraphs(5), "Big Text")
-        );
-
-        public ICommand SetStatusCommand => new RelayCommand
-        (
-            () => SetStatusText(Status)
-        );
-
-        public ICommand SetTimedStatusCommand => new RelayCommand
-        (
-            () => SetTimedStatusText(TimedStatus, StatusDuration)
         );
 
         public ICommand FileDialogOpenCommand => new RelayCommand

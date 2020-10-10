@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WHampson.ToolUI.Views;
+using WHampson.ToolUI;
 
 namespace ToolUI.Test
 {
@@ -21,36 +10,36 @@ namespace ToolUI.Test
     /// </summary>
     public partial class MainWindow : WindowBase
     {
+        public new MainVM ViewModel
+        {
+            get { return (MainVM) DataContext; }
+            set { DataContext = value; }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is TextBox tb)
+            if (ViewModel.Initialized)
             {
-                tb.SelectAll();
-            }
-        }
-
-        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is TextBox tb)
-            {
-                tb.SelectAll();
-            }
-        }
-
-        private void TextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is TextBox tb)
-            {
-                if (!tb.IsKeyboardFocusWithin)
+                foreach (var item in e.AddedItems)
                 {
-                    e.Handled = true;
-                    tb.Focus();
+                    if (item is TabPageVM page)
+                    {
+                        page.Update();
+                    }
                 }
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ViewModel.Initialized)
+            {
+                ViewModel.SwitchTabSets();
             }
         }
     }
