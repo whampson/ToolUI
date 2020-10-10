@@ -111,7 +111,7 @@ namespace WHampson.ToolUI.Controls
                 ContentStringFormat = SelectedContentStringFormat,
                 Visibility = Visibility.Collapsed,
                 Tag = tabItem ?? (ItemContainerGenerator.ContainerFromItem(item)),
-                Margin = new Thickness(0, 0, 0, 0)
+                Margin = new Thickness(0, 0, 0, 5)
             };
             m_itemsHolder.Children.Add(cp);
 

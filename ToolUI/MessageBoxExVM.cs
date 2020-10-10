@@ -128,7 +128,7 @@ namespace WHampson.ToolUI
                 case MessageBoxImage.Information:
                 case MessageBoxImage.Question:
                 case MessageBoxImage.Warning:
-                    SystemSounds.Beep.Play();
+                    SystemSounds.Asterisk.Play();
                     break;
                 case MessageBoxImage.Error:
                     SystemSounds.Hand.Play();
