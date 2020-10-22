@@ -15,9 +15,9 @@ namespace WHampson.ToolUI
         /// <summary>
         /// Gets or sets the window's view model.
         /// </summary>
-        public WindowVM ViewModel
+        public WindowViewModelBase ViewModel
         {
-            get { return (WindowVM) DataContext; }
+            get { return (WindowViewModelBase) DataContext; }
             set { DataContext = value; }
         }
 
@@ -29,31 +29,31 @@ namespace WHampson.ToolUI
 
         #region Virtual View Model Event Handlers
         /// <summary>
-        /// Called when the <see cref="BaseVM.Initializing"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Initializing"/> event is fired.
         /// </summary>
         protected virtual void OnInitialize()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.ShuttingDown"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.ShuttingDown"/> event is fired.
         /// </summary>
         protected virtual void OnShutdown()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Loading"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Loading"/> event is fired.
         /// </summary>
         protected virtual void OnLoad()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Unloading"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Unloading"/> event is fired.
         /// </summary>
         protected virtual void OnUnload()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Updating"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Updating"/> event is fired.
         /// </summary>
         protected virtual void OnUpdate()
         { }
@@ -174,7 +174,7 @@ namespace WHampson.ToolUI
         private void ViewModel_MessageBoxRequest(object sender, MessageBoxEventArgs e)
         {
             MessageBoxEx msgBox = new MessageBoxEx() { Owner = this };
-            MessageBoxExVM vm = msgBox.ViewModel as MessageBoxExVM;
+            MessageBoxExViewModel vm = msgBox.ViewModel as MessageBoxExViewModel;
             vm.Title = e.Title;
             vm.Text = e.Text;
             vm.Buttons = e.Buttons;

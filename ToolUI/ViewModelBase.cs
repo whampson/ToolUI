@@ -6,7 +6,7 @@ namespace WHampson.ToolUI
     /// <summary>
     /// Base class for all view models.
     /// </summary>
-    public class BaseVM : ObservableObject
+    public abstract class ViewModelBase : ObservableObject
     {
         public EventHandler Initializing;
         public EventHandler ShuttingDown;

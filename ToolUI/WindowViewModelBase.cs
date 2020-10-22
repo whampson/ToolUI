@@ -10,7 +10,7 @@ namespace WHampson.ToolUI
     /// <summary>
     /// Base class for window view models.
     /// </summary>
-    public class WindowVM : BaseVM
+    public abstract class WindowViewModelBase : ViewModelBase
     {
         #region Events
         public event EventHandler<MessageBoxEventArgs> MessageBoxRequest;
@@ -51,9 +51,9 @@ namespace WHampson.ToolUI
 
         #region Constructors
         /// <summary>
-        /// Creates a new <see cref="WindowVM"/> instance.
+        /// Creates a new <see cref="WindowViewModelBase"/> instance.
         /// </summary>
-        public WindowVM()
+        public WindowViewModelBase()
         {
             m_statusTimer = new DispatcherTimer();
             m_statusStopwatch = new Stopwatch();

@@ -13,7 +13,7 @@
     Title="{Binding Title}"
     Width="Auto" Height="Auto"
     MinWidth="300" MinHeight="175"
-    MaxWidth="400"
+    MaxWidth="500"
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
@@ -21,7 +21,7 @@
     ShowInTaskbar="False">
 
     <Window.DataContext>
-        <l:MessageBoxExVM/>
+        <l:MessageBoxExViewModel/>
     </Window.DataContext>
 
     <Window.InputBindings>

@@ -7,9 +7,9 @@ namespace WHampson.ToolUI
     /// </summary>
     public class DialogBase : WindowBase
     {
-        public new DialogVM ViewModel
+        public new DialogViewModelBase ViewModel
         {
-            get { return (DialogVM) DataContext; }
+            get { return (DialogViewModelBase) DataContext; }
             set { DataContext = value; }
         }
 

@@ -8,7 +8,7 @@ namespace WHampson.ToolUI
     /// <summary>
     /// Base class for dialog box view models.
     /// </summary>
-    public class DialogVM : WindowVM
+    public abstract class DialogViewModelBase : WindowViewModelBase
     {
         public new event EventHandler<DialogCloseEventArgs> CloseRequest;
 

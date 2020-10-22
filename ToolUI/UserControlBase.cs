@@ -12,40 +12,40 @@ namespace WHampson.ToolUI
         /// <summary>
         /// Gets or sets the UserControl's view model.
         /// </summary>
-        public UserControlVM ViewModel
+        public UserControlViewModelBase ViewModel
         {
-            get { return (UserControlVM) DataContext; }
+            get { return (UserControlViewModelBase) DataContext; }
             set { DataContext = value; }
         }
         #endregion
 
         #region Virtual View Model Event Handlers
         /// <summary>
-        /// Called when the <see cref="BaseVM.Initializing"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Initializing"/> event is fired.
         /// </summary>
         protected virtual void OnInitialize()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.ShuttingDown"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.ShuttingDown"/> event is fired.
         /// </summary>
         protected virtual void OnShutdown()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Loading"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Loading"/> event is fired.
         /// </summary>
         protected virtual void OnLoad()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Unloading"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Unloading"/> event is fired.
         /// </summary>
         protected virtual void OnUnload()
         { }
 
         /// <summary>
-        /// Called when the <see cref="BaseVM.Updating"/> event is fired.
+        /// Called when the <see cref="ViewModelBase.Updating"/> event is fired.
         /// </summary>
         protected virtual void OnUpdate()
         { }
