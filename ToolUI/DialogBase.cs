@@ -1,6 +1,4 @@
-﻿using WHampson.ToolUI.Events;
-
-namespace WHampson.ToolUI
+﻿namespace WHampson.ToolUI
 {
     /// <summary>
     /// Base class for dialog boxes.
@@ -28,9 +26,9 @@ namespace WHampson.ToolUI
             ViewModel.CloseRequest -= ViewModel_CloseRequest;
         }
 
-        private void ViewModel_CloseRequest(object sender, DialogCloseEventArgs e)
+        private void ViewModel_CloseRequest(object sender, bool? e)
         {
-            DialogResult = e.DialogResult;
+            DialogResult = e;
         }
     }
 }

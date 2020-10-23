@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using WHampson.ToolUI.Events;
 using WpfEssentials.Win32;
 
 namespace WHampson.ToolUI
@@ -10,16 +9,16 @@ namespace WHampson.ToolUI
     /// </summary>
     public abstract class DialogViewModelBase : WindowViewModelBase
     {
-        public new event EventHandler<DialogCloseEventArgs> CloseRequest;
+        public new event EventHandler<bool?> CloseRequest;
 
         public void Close(bool? result = null)
         {
-            CloseRequest?.Invoke(this, new DialogCloseEventArgs(result));
+            CloseRequest?.Invoke(this, result);
         }
 
         public new ICommand CloseCommand => new RelayCommand<bool?>
         (
-            (r) => CloseRequest?.Invoke(this, new DialogCloseEventArgs(r))
+            (r) => Close(r)
         );
 
         public ICommand CancelCommand => new RelayCommand
