@@ -48,7 +48,7 @@ namespace WHampson.ToolUI.Converters
                 }
             }
 
-            throw new NotSupportedException($"Cannot convert '{value}' to type {targetType}.");
+            return DependencyProperty.UnsetValue;
         }
     }
 }
