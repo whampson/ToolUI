@@ -54,7 +54,7 @@ namespace WHampson.ToolUI
         /// Initializes the view model.
         /// </summary>
         /// <remarks>
-        /// Perform lifetime initialization tasks here.
+        /// Perform lifetime initialization tasks here (e.g. allocating global memory).
         /// </remarks>
         public virtual void Init()
         {
@@ -66,7 +66,7 @@ namespace WHampson.ToolUI
         /// Uninitializes the view model.
         /// </summary>
         /// <remarks>
-        /// Perform lifetime cleanup tasks here.
+        /// Perform lifetime cleanup tasks here (e.g. freeing global memory).
         /// </remarks>
         public virtual void Shutdown()
         {
@@ -103,6 +103,5 @@ namespace WHampson.ToolUI
             UpdateCount++;
             Updating?.Invoke(this, EventArgs.Empty);
         }
-
     }
 }
