@@ -11,7 +11,6 @@ namespace WHampson.ToolUI
     /// </summary>
     public class WindowBase : Window
     {
-        #region Public Properties
         /// <summary>
         /// Gets or sets the window's view model.
         /// </summary>
@@ -25,9 +24,7 @@ namespace WHampson.ToolUI
         /// Hide the window instead of closing it when <see cref="Window.Close"/> is called.
         /// </summary>
         public bool HideOnClose { get; set; }
-        #endregion
 
-        #region Virtual View Model Event Handlers
         /// <summary>
         /// Called when the <see cref="ViewModelBase.Initializing"/> event is fired.
         /// </summary>
@@ -57,9 +54,7 @@ namespace WHampson.ToolUI
         /// </summary>
         protected virtual void OnUpdate()
         { }
-        #endregion
-
-        #region Window Event Handlers
+        
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -71,11 +66,11 @@ namespace WHampson.ToolUI
             ViewModel.Loading += ViewModel_Loading;
             ViewModel.Unloading += ViewModel_Unloading;
             ViewModel.Updating += ViewModel_Updating;
-            ViewModel.MessageBoxRequest += ViewModel_MessageBoxRequest;
-            ViewModel.FileDialogRequest += ViewModel_FileDialogRequest;
-            ViewModel.FolderDialogRequest += ViewModel_FolderDialogRequest;
-            ViewModel.HideRequest += ViewModel_HideRequest;
-            ViewModel.CloseRequest += ViewModel_CloseRequest;
+            ViewModel.ShowMessageBoxRequest += ViewModel_MessageBoxRequest;
+            ViewModel.ShowFileDialogRequest += ViewModel_FileDialogRequest;
+            ViewModel.ShowFolderDialogRequest += ViewModel_FolderDialogRequest;
+            ViewModel.WindowHideRequest += ViewModel_HideRequest;
+            ViewModel.WindowCloseRequest += ViewModel_CloseRequest;
 
             ViewModel.Init();
         }
@@ -99,11 +94,11 @@ namespace WHampson.ToolUI
             ViewModel.Loading -= ViewModel_Loading;
             ViewModel.Unloading -= ViewModel_Unloading;
             ViewModel.Updating -= ViewModel_Updating;
-            ViewModel.MessageBoxRequest -= ViewModel_MessageBoxRequest;
-            ViewModel.FileDialogRequest -= ViewModel_FileDialogRequest;
-            ViewModel.FolderDialogRequest -= ViewModel_FolderDialogRequest;
-            ViewModel.HideRequest -= ViewModel_HideRequest;
-            ViewModel.CloseRequest -= ViewModel_CloseRequest;
+            ViewModel.ShowMessageBoxRequest -= ViewModel_MessageBoxRequest;
+            ViewModel.ShowFileDialogRequest -= ViewModel_FileDialogRequest;
+            ViewModel.ShowFolderDialogRequest -= ViewModel_FolderDialogRequest;
+            ViewModel.WindowHideRequest -= ViewModel_HideRequest;
+            ViewModel.WindowCloseRequest -= ViewModel_CloseRequest;
         }
 
         protected override void OnContentRendered(EventArgs e)
@@ -133,9 +128,7 @@ namespace WHampson.ToolUI
         {
             ViewModel.Unload();
         }
-        #endregion
-
-        #region ViewModel Event Handlers
+        
         private void ViewModel_Initializing(object sender, EventArgs e)
         {
             OnInitialize();
@@ -166,7 +159,7 @@ namespace WHampson.ToolUI
             Hide();
         }
 
-        private void ViewModel_CloseRequest(object sender, EventArgs e)
+        private void ViewModel_CloseRequest(object sender, bool? e)
         {
             Close();
         }
@@ -195,6 +188,5 @@ namespace WHampson.ToolUI
             e.FileName = d.SelectedPath;
             e.Callback?.Invoke(r, e);
         }
-        #endregion
     }
 }

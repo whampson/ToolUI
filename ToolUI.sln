@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolUI", "ToolUI\ToolUI.csproj", "{C4FD1CCC-3B59-4FD5-BA8F-5A35C9A56670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolUI", "src\ToolUI.csproj", "{C4FD1CCC-3B59-4FD5-BA8F-5A35C9A56670}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolUI.Test", "ToolUI.Test\ToolUI.Test.csproj", "{C1421A57-0632-4F09-BB70-57980D525B63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolUI.Test", "test\ToolUI.Test.csproj", "{C1421A57-0632-4F09-BB70-57980D525B63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

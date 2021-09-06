@@ -12,24 +12,19 @@ namespace WHampson.ToolUI
     /// </summary>
     public abstract class WindowViewModelBase : ViewModelBase
     {
-        #region Events
-        public event EventHandler<MessageBoxEventArgs> MessageBoxRequest;
-        public event EventHandler<FileDialogEventArgs> FileDialogRequest;
-        public event EventHandler<FileDialogEventArgs> FolderDialogRequest;
-        public event EventHandler HideRequest;
-        public event EventHandler CloseRequest;
-        #endregion
+        public event EventHandler<MessageBoxEventArgs> ShowMessageBoxRequest;
+        public event EventHandler<FileDialogEventArgs> ShowFileDialogRequest;
+        public event EventHandler<FileDialogEventArgs> ShowFolderDialogRequest;
+        public event EventHandler<bool?> WindowCloseRequest;
+        public event EventHandler WindowHideRequest;
 
-        #region Private Fields
         private readonly DispatcherTimer m_statusTimer;
         private readonly Stopwatch m_statusStopwatch;
         private long m_timerDuration;
         private string m_statusText;
         private string m_defaultStatusText;
         private string m_title;
-        #endregion
 
-        #region Public Properties
         /// <summary>
         /// Gets or sets the window title.
         /// </summary>
@@ -47,9 +42,7 @@ namespace WHampson.ToolUI
             get { return m_statusText; }
             private set { m_statusText = value; OnPropertyChanged(); }
         }
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Creates a new <see cref="WindowViewModelBase"/> instance.
         /// </summary>
@@ -58,9 +51,7 @@ namespace WHampson.ToolUI
             m_statusTimer = new DispatcherTimer();
             m_statusStopwatch = new Stopwatch();
         }
-        #endregion
 
-        #region Virtual Functions
         /// <summary>
         /// This method is invoked when the window's <see cref="Window.Activated"/>
         /// event is fired.
@@ -81,9 +72,7 @@ namespace WHampson.ToolUI
         /// </summary>
         public virtual void ContentRendered()
         { }
-        #endregion
 
-        #region Overridden Functions
         public override void Init()
         {
             base.Init();
@@ -95,9 +84,7 @@ namespace WHampson.ToolUI
             base.Shutdown();
             m_statusTimer.Tick -= StatusTimer_Tick;
         }
-        #endregion
 
-        #region Status Text Functions
         /// <summary>
         /// Sets the status text.
         /// </summary>
@@ -160,22 +147,20 @@ namespace WHampson.ToolUI
                 StatusText = m_defaultStatusText;
             }
         }
-        #endregion
 
-        #region Dialog Box Functions
         public void ShowInfo(string text, string title = "Information")
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Information));
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Information));
         }
 
         public void ShowWarning(string text, string title = "Warning")
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Warning));
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Warning));
         }
 
         public void ShowError(string text, string title = "Error")
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Error));
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text, title, icon: MessageBoxImage.Error));
         }
 
         public void ShowException(Exception e, string text = "An error has occurred.", string title = "Error")
@@ -187,7 +172,7 @@ namespace WHampson.ToolUI
             MessageBoxImage icon = MessageBoxImage.Question,
             Action okAction = null, Action cancelAction = null)
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
             {
                 Title = title,
                 Icon = icon,
@@ -211,7 +196,7 @@ namespace WHampson.ToolUI
             MessageBoxImage icon = MessageBoxImage.Question,
             Action yesAction = null, Action noAction = null)
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
             {
                 Title = title,
                 Icon = icon,
@@ -235,7 +220,7 @@ namespace WHampson.ToolUI
             MessageBoxImage icon = MessageBoxImage.Question,
             Action yesAction = null, Action noAction = null, Action cancelAction = null)
         {
-            MessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
+            ShowMessageBoxRequest?.Invoke(this, new MessageBoxEventArgs(text)
             {
                 Title = title,
                 Icon = icon,
@@ -260,7 +245,7 @@ namespace WHampson.ToolUI
 
         public void ShowMessageBox(MessageBoxEventArgs e)
         {
-            MessageBoxRequest?.Invoke(this, e);
+            ShowMessageBoxRequest?.Invoke(this, e);
         }
 
         public void ShowFileDialog(FileDialogType type, Action<bool?, FileDialogEventArgs> callback = null)
@@ -273,7 +258,7 @@ namespace WHampson.ToolUI
 
         public void ShowFileDialog(FileDialogEventArgs e)
         {
-            FileDialogRequest?.Invoke(this, e);
+            ShowFileDialogRequest?.Invoke(this, e);
         }
 
         public void ShowFolderDialog(Action<bool?, FileDialogEventArgs> callback = null)
@@ -284,20 +269,37 @@ namespace WHampson.ToolUI
 
         public void ShowFolderDialog(FileDialogEventArgs e)
         {
-            FolderDialogRequest?.Invoke(this, e);
+            ShowFolderDialogRequest?.Invoke(this, e);
         }
-        #endregion
 
-        #region Window Commands
+        public void Close(bool? result = null)
+        {
+            WindowCloseRequest?.Invoke(this, result);
+        }
+
         public ICommand HideCommand => new RelayCommand
         (
-            () => HideRequest?.Invoke(this, EventArgs.Empty)
+            () => WindowHideRequest?.Invoke(this, EventArgs.Empty)
+        );
+
+        public ICommand CloseWithResultCommand => new RelayCommand<bool?>
+        (
+            (r) => Close(r)
         );
 
         public ICommand CloseCommand => new RelayCommand
         (
-            () => CloseRequest?.Invoke(this, EventArgs.Empty)
+            () => Close(null)
         );
-        #endregion
+
+        public ICommand ConfirmCommand => new RelayCommand
+        (
+            () => Close(true)
+        );
+
+        public ICommand CancelCommand => new RelayCommand
+        (
+            () => Close(false)
+        );
     }
 }

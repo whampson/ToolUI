@@ -8,10 +8,10 @@ namespace WHampson.ToolUI.Converters
     /// Negates a boolean value.
     /// </summary>
     [ValueConversion(typeof(bool), typeof(bool))]
-    public class InvertBooleanConverter : IValueConverter
+    public class NotConverter : IValueConverter
     {
         /// <summary>
-        /// Gets or sets the default value to return if the specified value is null or not a <see cref="bool"/>.
+        /// The default value to return if the specified value is not a <see cref="bool"/> or is null.
         /// </summary>
         public bool DefaultValue { get; set; }
 
@@ -27,7 +27,12 @@ namespace WHampson.ToolUI.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException($"ConvertBack is not supported for this converter.");
+            if (value is bool b && targetType == typeof(bool))
+            {
+                return !b;
+            }
+
+            throw new InvalidOperationException($"ConvertBack is not supported for type '{targetType}'.");
         }
     }
 }

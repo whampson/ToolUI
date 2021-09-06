@@ -14,7 +14,7 @@ namespace WHampson.ToolUI
     /// <summary>
     /// Extended Message Box view model.
     /// </summary>
-    internal class MessageBoxExViewModel : DialogViewModelBase
+    internal class MessageBoxExViewModel : WindowViewModelBase
     {
         private const string OKText = "OK";
         private const string CancelText = "Cancel";

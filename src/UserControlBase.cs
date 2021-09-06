@@ -14,9 +14,9 @@ namespace WHampson.ToolUI
         /// <summary>
         /// Gets or sets the UserControl's view model.
         /// </summary>
-        public UserControlViewModelBase ViewModel
+        public ViewModelBase ViewModel
         {
-            get { return (UserControlViewModelBase) DataContext; }
+            get { return (ViewModelBase) DataContext; }
             set { DataContext = value; }
         }
 

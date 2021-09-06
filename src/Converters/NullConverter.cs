@@ -8,7 +8,7 @@ namespace WHampson.ToolUI.Converters
     /// Tests whether an object is null.
     /// </summary>
     [ValueConversion(typeof(object), typeof(bool))]
-    public class IsNullConverter : IValueConverter
+    public class NullConverter : IValueConverter
     {
         /// <summary>
         /// Gets or sets whether to invert the null test result.
@@ -30,7 +30,7 @@ namespace WHampson.ToolUI.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException($"ConvertBack is not supported for this converter.");
+            throw new NotSupportedException($"ConvertBack is not supported for type '{targetType}'.");
         }
     }
 }

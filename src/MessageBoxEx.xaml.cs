@@ -7,7 +7,7 @@ namespace WHampson.ToolUI
     /// <summary>
     /// Interaction logic for MessageBoxEx.xaml
     /// </summary>
-    public partial class MessageBoxEx : DialogBase
+    public partial class MessageBoxEx : WindowBase
     {
         const int GWL_EXSTYLE = -20;
         const int WS_EX_DLGMODALFRAME = 0x0001;

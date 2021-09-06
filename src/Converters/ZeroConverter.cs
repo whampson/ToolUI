@@ -7,7 +7,7 @@ namespace WHampson.ToolUI.Converters
     /// <summary>
     /// Tests whether an object is null.
     /// </summary>
-    public class IsZeroConverter : IValueConverter
+    public class ZeroConverter : IValueConverter
     {
         public bool Invert { get; set; }
 
