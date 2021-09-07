@@ -6,8 +6,8 @@
     <Authors>Wes Hampson</Authors>
     <RootNamespace>WHampson.ToolUI</RootNamespace>
     <AssemblyName>WHampson.ToolUI</AssemblyName>
-    <AssemblyVersion>1.2.0.222</AssemblyVersion>
-    <FileVersion>1.2.0.222</FileVersion>
+    <AssemblyVersion>1.2.0.229</AssemblyVersion>
+    <FileVersion>1.2.0.229</FileVersion>
     <Version>1.2.0</Version>
   </PropertyGroup>
 

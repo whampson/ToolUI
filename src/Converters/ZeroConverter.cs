@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using WHampson.ToolUI.Extensions;
 
 namespace WHampson.ToolUI.Converters
 {
@@ -17,7 +18,6 @@ namespace WHampson.ToolUI.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isNumeric;
             bool result = false;
 
             if (value == null)
@@ -26,23 +26,8 @@ namespace WHampson.ToolUI.Converters
                 goto Done;
             }
 
-            Type t = value.GetType();
-            t = Nullable.GetUnderlyingType(t) ?? t;
-
-            if (t.IsPrimitive)
-            {
-                isNumeric =
-                    t != typeof(bool) &&
-                    t != typeof(char) &&
-                    t != typeof(IntPtr) &&
-                    t != typeof(UIntPtr);
-            }
-            else
-            {
-                isNumeric = (t == typeof(decimal));
-            }
-
-            if (!isNumeric)
+            Type t = value.GetType().GetUnderlyingType();
+            if (!t.IsNumeric())
             {
                 result = false;
                 goto Done;
