@@ -10,7 +10,7 @@ using WpfEssentials.Win32;
 
 namespace ToolUI.Test
 {
-    public class MainVM : WindowVM
+    public class MainVM : WindowViewModelBase
     {
         private ObservableCollection<TabPageVM> m_tabs;
         private int m_selectedTabIndex;

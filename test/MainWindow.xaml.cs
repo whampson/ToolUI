@@ -1,6 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Input;
 using WHampson.ToolUI;
 
 namespace ToolUI.Test
@@ -41,6 +40,14 @@ namespace ToolUI.Test
             {
                 ViewModel.SwitchTabSets();
             }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            ViewModel.PromptYesNo(
+                "Are you sure you want to quit?",
+                "Exit Application",
+                noAction: () => e.Cancel = true);
         }
     }
 }

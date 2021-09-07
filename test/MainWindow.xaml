@@ -9,7 +9,8 @@
     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
     xmlns:l="clr-namespace:ToolUI.Test"
     mc:Ignorable="d"
-    Title="Test Window" Height="450" Width="550">
+    Title="Test Window" Height="450" Width="550"
+    Closing="Window_Closing">
 
     <Window.DataContext>
         <l:MainVM/>

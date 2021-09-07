@@ -5,16 +5,19 @@ using System.Windows.Data;
 namespace WHampson.ToolUI.Converters
 {
     /// <summary>
-    /// Tests whether an object is null.
+    /// Tests whether an object is zero.
     /// </summary>
     public class ZeroConverter : IValueConverter
     {
+        /// <summary>
+        /// Setting this to true will invert the null test result,
+        /// effectively making this a "NotZeroConverter".
+        /// </summary>
         public bool Invert { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool isNumeric;
-            decimal num;
             bool result = false;
 
             if (value == null)
@@ -45,7 +48,7 @@ namespace WHampson.ToolUI.Converters
                 goto Done;
             }
 
-            if (decimal.TryParse(value.ToString(), out num))
+            if (decimal.TryParse(value.ToString(), out decimal num))
             {
                 result = (num == 0);
             }

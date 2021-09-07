@@ -34,7 +34,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <!--<RowDefinition Height="*"/>-->
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -53,13 +52,6 @@
             Text="{Binding YLabel}" 
             Visibility="{Binding IsLabelVisible, Converter={StaticResource BoolToVisibility}}"/>
 
-        <!--<TextBlock
-            Grid.Column="0" Grid.Row="2"
-            Width="{Binding LabelWidth}" Height="{Binding LabelHeight}"
-            Margin="{Binding LabelMargin}"
-            Style="{StaticResource LabelStyle}"
-            Text="{Binding ZLabel}" 
-            Visibility="{Binding IsLabelVisible, Converter={StaticResource BoolToVisibility}}"/>-->
 
         <xctk:SingleUpDown
             Grid.Column="1" Grid.Row="0"
@@ -76,14 +68,6 @@
             Style="{StaticResource UpDownStyle}"
             Value="{Binding Y}" FormatString="{Binding FormatString}"
             ValueChanged="YComponent_ValueChanged"/>
-
-        <!--<xctk:SingleUpDown
-            Grid.Column="1" Grid.Row="2"
-            Width="{Binding UpDownWidth}" Height="{Binding UpDownHeight}"
-            Margin="{Binding UpDownMargin}"
-            Style="{StaticResource UpDownStyle}"
-            Value="{Binding Z}" FormatString="{Binding FormatString}"
-            ValueChanged="ZComponent_ValueChanged"/>-->
 
     </Grid>
 

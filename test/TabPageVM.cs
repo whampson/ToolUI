@@ -2,7 +2,7 @@
 
 namespace ToolUI.Test
 {
-    public class TabPageVM : UserControlVM
+    public class TabPageVM : ViewModelBase
     {
         private string m_title;
         private MainVM m_mainWindow;

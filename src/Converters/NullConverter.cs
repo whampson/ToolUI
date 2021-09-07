@@ -11,26 +11,21 @@ namespace WHampson.ToolUI.Converters
     public class NullConverter : IValueConverter
     {
         /// <summary>
-        /// Gets or sets whether to invert the null test result.
+        /// Setting this to true will invert the null test result,
+        /// effectively making this a "NotNullConverter".
         /// </summary>
-        /// <remarks>
-        /// Setting this to <c>true</c> will effectively turn the converter into
-        /// a "IsNotNull" converter.
-        /// </remarks>
         public bool Invert { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (Invert)
-            {
-                return value != null;
-            }
-            return value == null;
+            return (Invert)
+                ? value != null
+                : value == null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException($"ConvertBack is not supported for type '{targetType}'.");
+            throw new NotSupportedException($"Cannot convert '{value}' to type {targetType}.");
         }
     }
 }

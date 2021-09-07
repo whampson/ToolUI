@@ -6,11 +6,14 @@ using System.Windows.Data;
 namespace WHampson.ToolUI.Converters
 {
     /// <summary>
-    /// Convert tests whether a flag is set in a flags enum.
-    /// ConvertBack will set or clear a flag in a flags enum.
+    /// Value converter for flags enums.
     /// </summary>
+    /// <remarks>
+    /// <c>Convert</c> tests whether a flag is set in a flags enum.
+    /// <c>ConvertBack</c> will set or clear a flag in a flags enum.
+    /// </remarks>
     [ValueConversion(typeof(Enum), typeof(bool), ParameterType = typeof(Enum))]
-    public class EnumFlagConverter : IValueConverter
+    public class EnumFlagsConverter : IValueConverter
     {
         private Enum m_target;
 
@@ -37,6 +40,7 @@ namespace WHampson.ToolUI.Converters
                 Enum retval = (Enum) Enum.Parse(targetType, result.ToString());
                 return retval;
             }
+
             throw new NotSupportedException($"Cannot convert '{value}' to type {targetType}.");
         }
 

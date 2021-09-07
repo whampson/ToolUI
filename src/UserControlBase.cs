@@ -5,8 +5,12 @@ using System.Windows.Controls;
 namespace WHampson.ToolUI
 {
     /// <summary>
-    /// Base class for UserControls.
+    /// A base <see cref="UserControl"/> class.
     /// </summary>
+    /// <remarks>
+    /// User controls derived from this class are meant to be paired with view-models derived from
+    /// <see cref="ViewModelBase"/>.
+    /// </remarks>
     public class UserControlBase : UserControl
     {
         private bool m_lazyInitialize;
@@ -22,13 +26,26 @@ namespace WHampson.ToolUI
 
         private void InitializeHandlers()
         {
-            Debug.Assert(ViewModel != null, "ViewModel is null!");
+            Debug.Assert(ViewModel != null, "ViewModel cannot be null!");
 
             ViewModel.Initializing += ViewModel_Initializing;
             ViewModel.ShuttingDown += ViewModel_ShuttingDown;
             ViewModel.Loading += ViewModel_Loading;
             ViewModel.Unloading += ViewModel_Unloading;
             ViewModel.Updating += ViewModel_Updating;
+        }
+
+        private void ShutdownHandlers()
+        {
+            Debug.Assert(ViewModel != null, "ViewModel cannot be null!");
+
+            ViewModel.Initializing -= ViewModel_Initializing;
+            ViewModel.ShuttingDown -= ViewModel_ShuttingDown;
+            ViewModel.Loading -= ViewModel_Loading;
+            ViewModel.Unloading -= ViewModel_Unloading;
+            ViewModel.Updating -= ViewModel_Updating;
+
+            Loaded -= LazyInitializer;
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -38,6 +55,7 @@ namespace WHampson.ToolUI
             if (ViewModel != null)
             {
                 InitializeHandlers();
+                // OnInitialize() called by ViewModel.Initializing event
                 m_lazyInitialize = false;
             }
             else
@@ -45,31 +63,26 @@ namespace WHampson.ToolUI
                 m_lazyInitialize = true;
             }
 
-            Loaded += (o, e) =>
+            Loaded += LazyInitializer;
+        }
+
+        private void LazyInitializer(object sender, EventArgs e)
+        {
+            // Deferred initialization, invoke when the UserControl.Loaded event is fired.
+            if (m_lazyInitialize)
             {
-                if (m_lazyInitialize)
-                {
-                    InitializeHandlers();
-                    OnInitialize();
-                    OnLoad();
-                    m_lazyInitialize = false;
-                }
-            };
+                InitializeHandlers();
+                OnInitialize();
+                OnLoad();
+                m_lazyInitialize = false;
+            }
         }
 
         private void ViewModel_Loading(object sender, EventArgs e) => OnLoad();
         private void ViewModel_Unloading(object sender, EventArgs e) => OnUnload();
         private void ViewModel_Updating(object sender, EventArgs e) => OnUpdate();
         private void ViewModel_Initializing(object sender, EventArgs e) => OnInitialize();
-        private void ViewModel_ShuttingDown(object sender, EventArgs e)
-        {
-            OnShutdown();
-            ViewModel.Initializing -= ViewModel_Initializing;
-            ViewModel.ShuttingDown -= ViewModel_ShuttingDown;
-            ViewModel.Loading -= ViewModel_Loading;
-            ViewModel.Unloading -= ViewModel_Unloading;
-            ViewModel.Updating -= ViewModel_Updating;
-        }
+        private void ViewModel_ShuttingDown(object sender, EventArgs e) { OnShutdown(); ShutdownHandlers(); }
 
         /// <summary>
         /// Called when the <see cref="ViewModelBase.Loading"/> event is fired.

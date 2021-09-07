@@ -32,7 +32,7 @@ namespace WHampson.ToolUI.Converters
                 return !b;
             }
 
-            throw new InvalidOperationException($"ConvertBack is not supported for type '{targetType}'.");
+            throw new NotSupportedException($"Cannot convert '{value}' to type {targetType}.");
         }
     }
 }

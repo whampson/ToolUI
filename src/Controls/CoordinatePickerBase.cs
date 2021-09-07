@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace WHampson.ToolUI.Controls
 {
-    public abstract class CoordinatePickerBase : UserControl
+    public abstract class CoordinatePickerBase : UserControlBase
     {
         public static readonly DependencyProperty LabelMarginProperty = DependencyProperty.Register(
             nameof(LabelMargin), typeof(Thickness), typeof(CoordinatePickerBase),

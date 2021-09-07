@@ -7,7 +7,7 @@ using System.Windows.Data;
 namespace WHampson.ToolUI.Converters
 {
     /// <summary>
-    /// Converts a <see cref="Vector2"/> or <see cref="Vector3"/> to <see cref="string"/> and back.
+    /// Converts a <see cref="Vector2"/> or <see cref="Vector3"/> to a <see cref="string"/> and back.
     /// </summary>
     public class VectorConverter : IValueConverter
     {
@@ -33,11 +33,11 @@ namespace WHampson.ToolUI.Converters
                 string[] comp = s.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (comp.Length > 1 && comp.Length < 4)
                 {
-                    bool xValid = false, yValid = false, zValid = false;
-                    float x = 0, y = 0, z = 0;
+                    bool zValid = false;
+                    float z = 0;
 
-                    xValid = float.TryParse(comp[0], out x);
-                    yValid = float.TryParse(comp[1], out y);
+                    bool xValid = float.TryParse(comp[0], out float x);
+                    bool yValid = float.TryParse(comp[1], out float y);
                     if (comp.Length == 3) zValid = float.TryParse(comp[2], out z);
 
                     if (xValid && yValid)
